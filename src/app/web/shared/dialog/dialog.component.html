@@ -1,0 +1,31 @@
+<div *ngIf="isVisible()" class="dialog-overlay">
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h2>{{ dialogType() === 'add' ? 'Add User' : dialogType() === 'edit' ? 'Edit User' : 'Delete User' }}</h2>
+        <button class="close-btn" (click)="onClose()">X</button>
+      </div>
+  
+      <div class="dialog-body">
+        <div *ngIf="dialogType() !== 'delete'">
+          <label for="name">First Name</label>
+          <input type="text" id="name" [(ngModel)]="user().name.first_name" placeholder="Enter name" />
+          <label for="name">Last Name</label>
+          <input type="text" id="name" [(ngModel)]="user().name.last_name" placeholder="Enter name" />
+  
+          <label for="role">Role</label>
+          <input type="text" id="role" [(ngModel)]="user().role" placeholder="Enter role" />
+        </div>
+  
+        <div *ngIf="dialogType() === 'delete'">
+          <p>Are you sure you want to delete the user: <strong>{{ user()?.name }}</strong>?</p>
+        </div>
+      </div>
+  
+      <div class="dialog-footer">
+        <button *ngIf="dialogType() !== 'delete'" class="save-btn" (click)="onSave()">Save</button>
+        <button *ngIf="dialogType() === 'delete'" class="delete-btn" (click)="onDelete()">Delete</button>
+        <button class="cancel-btn" (click)="onClose()">Cancel</button>
+      </div>
+    </div>
+  </div>
+  

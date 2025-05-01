@@ -1,0 +1,91 @@
+// Variables for reuse
+$overlay-background: rgba(0, 0, 0, 0.5);
+$dialog-background: #fff;
+$border-radius: 8px;
+$box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+$button-padding: 8px 16px;
+$button-hover-color: #f0f0f0;
+
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: $overlay-background;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.dialog-content {
+  background: $dialog-background;
+  padding: 20px;
+  border-radius: $border-radius;
+  width: 300px;
+  box-shadow: $box-shadow;
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dialog-header h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+button {
+  padding: $button-padding;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  &:hover {
+    background-color: $button-hover-color;
+  }
+}
+
+.dialog-body {
+  margin-top: 10px;
+}
+
+.dialog-footer {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+button.close-btn {
+  font-size: 18px;
+  background-color: transparent;
+  color: #333;
+}
+
+button.save-btn, button.delete-btn {
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 4px;
+}
+
+button.delete-btn {
+  background-color: #f44336;
+}
+
+button.cancel-btn {
+  background-color: #ccc;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 8px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}

@@ -1,0 +1,202 @@
+
+<!-- Loader while data loads -->
+@if (gridStore.isLoading()) {
+  <div class="loader-container">
+    <div class="spinner"></div>
+  </div>
+}@else {
+  <div class="dashboard-wrapper">
+    <!-- Welcome Header -->
+     <div class="header-main">
+       <div class="welcome-header">
+         <h2>Welcome back, Olivia</h2>
+       </div>
+       <header class="topbar">
+         <div class="actions">
+           <span>
+             <img src="assets/search.png" alt="">
+           </span>
+           <button class="customize-btn">
+             <img src="assets/customize.png" alt="Customize Icon" />
+             <span>Customize</span>
+           </button>
+           <button class="customize-btn">
+             <img src="assets/export.png" alt="export Icon" />
+             <span>Export</span>
+           </button>
+         </div>
+       </header>
+     </div>
+    <!-- Chart + Stats Section -->
+    <div class="dashboard-top">
+      <!-- Chart Card -->
+      <div class="card chart-card">
+        <div class="chart-card-header">
+          <div>
+            <img src="assets/cube.png" alt="">
+          </div>
+          <div class="card-header">
+            <h3>Vendor breakdown</h3>
+            <p>Keep track of vendors and their security ratings.</p>
+          </div>
+        </div>
+        <div class="chart-container">
+          <span>Security rating</span>
+          <ag-charts [options]="chartOptions"></ag-charts>
+        </div>
+        <div class="card-footer">
+          <button class="btn-outline">View full report</button>
+        </div>
+      </div>
+  
+      <!-- Stats Widget -->
+      <div class="vendor-card">
+        <div class="card-header">
+          <div>
+            <h3>Vendors monitored</h3>
+            <span class="spots-used">You're using 80% of available spots.</span>
+          </div>
+          <span class="growth"><img src="assets/three-dot.png" alt=""></span>
+        </div>
+        <div class="progress-wrapper">
+          <div class="range">
+            <svg viewBox="0 0 100 50" class="semi-progress">
+              <path
+                class="track"
+                d="M10,50 A40,40 0 0,1 90,50"
+              />
+              <path
+                class="progress"
+                d="M10,50 A40,40 0 0,1 90,50"
+                stroke-dasharray="100"
+                stroke-dashoffset="20"
+              />
+              <text x="50" y="38" text-anchor="middle" class="center-text">240</text>
+            </svg>
+            <span><img src="assets/arrow.png" alt=""> 10%</span>
+          </div>
+          <div class="card-body">
+            <strong>You’ve almost reached your limit</strong>
+            <p>You have used 80% of your available spots. Upgrade plan to monitor more vendors.</p>
+          </div>
+        </div>
+        <div class="vendor-btn">
+          <button class="upgrade-btn"> <img src="assets/current.png" alt=""> Upgrade plan</button>
+        </div>
+      </div>
+  </div>
+  
+    <!-- Team Members Table -->
+  
+    <div class="card team-members">
+      <div class="card-header">
+        <h3>Team members <span class="badge count">100 users</span></h3>
+      </div>
+  
+      <table>
+        <thead>
+          <tr>
+            <th>
+              <label class="custom-checkbox">
+                <input type="checkbox" [checked]="allSelected()"
+                       [indeterminate]="someSelected() && !allSelected()"
+                       (change)="onToggleAllChange($event)" />
+                <span class="checkmark"></span>
+              </label>
+            </th>
+            <ng-container *ngFor="let column of gridStore.columns();">
+              <th [ngClass]="column.align">{{ column.column_name }}</th>
+            </ng-container>
+          </tr>
+        </thead>
+    
+        <tbody>
+          @for (user of gridStore.rows(); track user.id) {
+            <tr>
+              <td>
+                <label class="custom-checkbox">
+                  <input type="checkbox" 
+                  [checked]="user.isSelected"
+              (change)="onUserToggle(user.id, $event)" />
+                  <span class="checkmark"></span>
+                </label>
+              </td>
+              <td>
+                <div class="user-cell">
+                  @if (user.avatar) {
+                    <img [src]="user.avatar" class="avatar" />
+                  } @else {
+                    <span  class="avatar-placeholder">{{ getUserShortName(user.name.first_name, user.name.last_name) }}</span>
+                  }
+                  <div>
+                    <div class="name">{{ user.name.first_name }} {{ user.name.last_name }}</div>
+                    <div class="username">{{ user.name.handle }}</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge status"><span class="dot"></span> {{ user.status }}</span></td>
+              <td>{{ user.role }}</td>
+              <td>
+                <div class="progress-wrapper">
+                  <div class="progress-bar">
+                    <div class="fill" [style.width.%]="user.license_used"></div>
+                  </div>
+                  <span class="percent">{{ user.license_used }}%</span>
+                </div>
+              </td>
+  
+              <td>
+                @for (team of user.teams; track team.value) {
+                  <span class="tag"
+                        [style.color]="team.text_color"
+                        [style.backgroundColor]="team.background_color"
+                        [style.borderColor]="team.text_color">
+                    {{ team.value }}
+                  </span>
+                }
+              </td>
+              
+              <td class="actions">
+                <img class="delete" src="assets/delete.png" alt="" (click)="openDialog('delete',user.id)">
+                <img src="assets/edit.png" alt="" (click)="openDialog('edit',user)">
+              </td>
+            </tr>
+          } @empty {
+            <tr><td colspan="7">No users found.</td></tr>
+          }
+        </tbody>
+        
+      </table>
+      <div class="pagination">
+        <button class="page-btn" [disabled]="currentPage === 1">
+          <span>&larr;</span> Previous
+        </button>
+      
+        <ng-container *ngFor="let page of visiblePages">
+          <button 
+            class="page-number-btn" 
+            [ngClass]="{ 'active': page === currentPage, 'dots': page === '...'}"
+            [disabled]="page === '...'"
+          >
+            {{ page }}
+          </button>
+        </ng-container>
+      
+        <button class="page-btn" [disabled]="currentPage === totalPages">
+          Next <span>&rarr;</span>
+        </button>
+      </div>
+      
+    </div>
+    <app-dialog 
+    [isVisible]="isDialogVisible" 
+    [dialogType]="dialogType"
+    [user]="currentUser()"
+    (closeDialog)="closeDialog()"
+    (save)="saveUser($event)"
+    (delete)="deleteUser($event)">
+  </app-dialog>
+  
+  </div>
+}
+

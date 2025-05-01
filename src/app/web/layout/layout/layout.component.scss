@@ -1,0 +1,18 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 16px);
+  background-color: #f9fafb;
+
+  .layout-body {
+    display: flex;
+    flex: 1;
+  }
+
+  .content {
+    flex: 1;
+    padding: 18px 15px 0 15px;
+    overflow-y: auto;
+    background: #fff;
+  }
+}
