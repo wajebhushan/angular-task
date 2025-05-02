@@ -322,12 +322,20 @@
         object-fit: cover;
       }
       
-      .avatar-placeholder {
+      .avatar {
         width: 36px;
         height: 36px;
         border-radius: 50%;
-        object-fit: cover;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #aeaeae;
+        color: #fff;
+        font-weight: bold;
+        font-size: 14px;
+        text-transform: uppercase;
       }
+      
 
       .name {
         font-weight: 600;

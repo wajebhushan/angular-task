@@ -111,58 +111,58 @@
         </thead>
     
         <tbody>
-          @for (user of gridStore.rows(); track user.id) {
-            <tr>
-              <td>
-                <label class="custom-checkbox">
-                  <input type="checkbox" 
-                  [checked]="user.isSelected"
-              (change)="onUserToggle(user.id, $event)" />
-                  <span class="checkmark"></span>
-                </label>
-              </td>
-              <td>
-                <div class="user-cell">
-                  @if (user.avatar) {
-                    <img [src]="user.avatar" class="avatar" />
-                  } @else {
-                    <span  class="avatar-placeholder">{{ getUserShortName(user.name.first_name, user.name.last_name) }}</span>
+          @defer {
+            @for (user of gridStore.rows(); track user.id) {
+              <tr>
+                <td>
+                  <label class="custom-checkbox">
+                    <input type="checkbox" 
+                    [checked]="user.isSelected"
+                (change)="onUserToggle(user.id, $event)" />
+                    <span class="checkmark"></span>
+                  </label>
+                </td>
+                <td>
+                  <div class="user-cell">
+                    @if (user.avatar) {
+                      <img [src]="user.avatar" class="avatar" />
+                    } @else {
+                      <span  class="avatar">{{ getUserShortName(user.name.first_name, user.name.last_name) }}</span>
+                    }
+                    <div>
+                      <div class="name">{{ user.name.first_name }} {{ user.name.last_name }}</div>
+                      <div class="username">{{ user.name.handle }}</div>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="badge status"><span class="dot"></span> {{ user.status }}</span></td>
+                <td>{{ user.role }}</td>
+                <td>
+                  <div class="progress-wrapper">
+                    <div class="progress-bar">
+                      <div class="fill" [style.width.%]="user.license_used"></div>
+                    </div>
+                    <span class="percent">{{ user.license_used }}%</span>
+                  </div>
+                </td>
+    
+                <td>
+                  @for (team of user.teams; track team.value) {
+                    <span class="tag"
+                          [style.color]="team.text_color"
+                          [style.backgroundColor]="team.background_color"
+                          [style.borderColor]="team.text_color">
+                      {{ team.value }}
+                    </span>
                   }
-                  <div>
-                    <div class="name">{{ user.name.first_name }} {{ user.name.last_name }}</div>
-                    <div class="username">{{ user.name.handle }}</div>
-                  </div>
-                </div>
-              </td>
-              <td><span class="badge status"><span class="dot"></span> {{ user.status }}</span></td>
-              <td>{{ user.role }}</td>
-              <td>
-                <div class="progress-wrapper">
-                  <div class="progress-bar">
-                    <div class="fill" [style.width.%]="user.license_used"></div>
-                  </div>
-                  <span class="percent">{{ user.license_used }}%</span>
-                </div>
-              </td>
-  
-              <td>
-                @for (team of user.teams; track team.value) {
-                  <span class="tag"
-                        [style.color]="team.text_color"
-                        [style.backgroundColor]="team.background_color"
-                        [style.borderColor]="team.text_color">
-                    {{ team.value }}
-                  </span>
-                }
-              </td>
-              
-              <td class="actions">
-                <img class="delete" src="assets/delete.png" alt="" (click)="openDialog('delete',user.id)">
-                <img src="assets/edit.png" alt="" (click)="openDialog('edit',user)">
-              </td>
-            </tr>
-          } @empty {
-            <tr><td colspan="7">No users found.</td></tr>
+                </td>
+                
+                <td class="actions">
+                  <img class="delete" src="assets/delete.png" alt="" (click)="openDialog('delete',user.id)">
+                  <img src="assets/edit.png" alt="" (click)="openDialog('edit',user)">
+                </td>
+              </tr>
+            }
           }
         </tbody>
         
